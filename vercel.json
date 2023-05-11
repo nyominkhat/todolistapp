@@ -1,0 +1,7 @@
+{
+  "build": {
+    "prerun": {
+      "commands": [{ "cmd": "prisma generate" }]
+    }
+  }
+}
