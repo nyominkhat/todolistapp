@@ -18,7 +18,7 @@ export default function Home({ todos }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  console.log(session);
+  // console.log(session);
 
   if (status === "loading") return <Loader />;
 
@@ -44,15 +44,15 @@ export default function Home({ todos }) {
   return (
     <>
       <Layout>
-        <section className="flex items-center justify-center grow">
-          <Card className="max-w-md px-4 py-6 mx-auto select-none">
-            <Title className="font-semibold text-center">
+        <section className="container flex items-center justify-center h-full mx-auto grow">
+          <Card className="h-[90%] px-4 py-6 mx-auto select-none min-w-md bg-[#B5B3AE]/5 ring-slate-300">
+            <Title className="font-semibold text-center text-slate-800">
               Get things done!
             </Title>
-            <Divider />
+            <Divider className="border border-slate-400" />
 
             <article className="flex gap-4 mb-4">
-              <TextInput value={text} className={``} onChange={handleText} />
+              <TextInput value={text} onChange={handleText} />
               <button onClick={newTodo}>
                 {isLoading ? (
                   <PuffLoader color="#23e9c2" size={15} />

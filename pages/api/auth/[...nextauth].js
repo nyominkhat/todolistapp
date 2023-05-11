@@ -15,8 +15,12 @@ export default NextAuth({
     session: async ({ session, user }) => {
       session.user.id = user.id;
       session.user.username = user.username;
+      session.user.createdAt = user.createdAt;
       return Promise.resolve(session);
     },
   },
+  // pages: {
+  //   signIn: "/signin",
+  // },
   secret: process.env.JWT_SECRET,
 });

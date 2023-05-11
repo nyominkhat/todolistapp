@@ -3,7 +3,7 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 import { useRouter } from "next/router";
-import toast from "react-hot-toast";
+
 
 import ModelBox from "./ModelBox";
 import { PuffLoader } from "react-spinners";

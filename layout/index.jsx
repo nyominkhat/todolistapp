@@ -8,9 +8,9 @@ export default function index({ children }) {
       <Head>
         <title>Let&apos;s list</title>
       </Head>
-      <main className="flex flex-col w-screen h-screen select-none">
+      <main className="flex w-screen h-screen border-8 select-none ">
         <Navbar />
-        {children}
+        <div className="grow">{children}</div>
       </main>
     </>
   );
