@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
 import ModelBox from "./ModelBox";
-import Loader from "./Loader";
 import { PuffLoader } from "react-spinners";
 
 export default function Todo({ todo }) {
@@ -39,15 +38,18 @@ export default function Todo({ todo }) {
 
       <div className="flex items-center gap-4">
         <button onClick={handleModel}>
-          {isLoading ? <PuffLoader color="#23e9c2" /> : <HiOutlinePencilAlt />}
+          <HiOutlinePencilAlt />
         </button>
         <button onClick={() => handleDel(todo.id)}>
-          {isLoading ? <PuffLoader color="#23e9c2" /> : <AiFillDelete />}
+          {isLoading ? (
+            <PuffLoader color="#23e9c2" size={15} />
+          ) : (
+            <AiFillDelete />
+          )}
         </button>
       </div>
 
       {showModel && <ModelBox todo={todo} handleModel={handleModel} />}
-      {/* <ModelBox todo={todo}/> */}
     </article>
   );
 }

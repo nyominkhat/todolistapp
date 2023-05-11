@@ -10,7 +10,10 @@ import { PuffLoader } from "react-spinners";
 export default function ModelBox({ todo, handleModel }) {
   const [text, setText] = useState(todo.todo);
   const [isTeskDone, setIsTeskDone] = useState(todo.isDone);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState({
+    complete: false,
+    submit: false,
+  });
   const router = useRouter();
 
   function handleNewToDo(e) {
@@ -18,18 +21,18 @@ export default function ModelBox({ todo, handleModel }) {
   }
 
   async function handleSubmit() {
-    setIsLoading(true);
+    setIsLoading({ ...isLoading, submit: true });
     await axios.patch("/api/todo", {
       todo: text,
       id: todo.id,
     });
     router.replace(router.asPath);
     handleModel();
-    setIsLoading(false);
+    setIsLoading({ ...isLoading, submit: false });
   }
 
   async function handleTeskDone() {
-    setIsLoading(true);
+    setIsLoading({ ...isLoading, complete: true });
     const updatedIsDone = !isTeskDone;
 
     try {
@@ -43,7 +46,7 @@ export default function ModelBox({ todo, handleModel }) {
     } catch (error) {
       console.error("Error updating task:", error);
     }
-    setIsLoading(false);
+    setIsLoading({ ...isLoading, complete: false });
   }
 
   return (
@@ -70,15 +73,19 @@ export default function ModelBox({ todo, handleModel }) {
               handleTeskDone();
             }}
           >
-            {isLoading ? (
-              <PuffLoader color="#23e9c2" />
+            {isLoading.complete ? (
+              <PuffLoader color="#23e9c2" size={15} />
             ) : (
               <AiOutlineCheckCircle color={`${todo.isDone ? "green" : ""}`} />
             )}
           </button>
 
           <button onClick={handleSubmit}>
-            {isLoading ? <PuffLoader color="#23e9c2" /> : <GiCheckMark />}
+            {isLoading.submit ? (
+              <PuffLoader color="#23e9c2" size={15} />
+            ) : (
+              <GiCheckMark />
+            )}
           </button>
         </div>
       </Card>

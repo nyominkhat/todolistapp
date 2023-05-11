@@ -22,9 +22,6 @@ export default function Home({ todos }) {
 
   if (status === "loading") return <Loader />;
 
-  // console.log(session);
-  // console.log(todos);
-
   if (!session) {
     router.replace("/api/auth/signin");
     return null;
@@ -35,11 +32,13 @@ export default function Home({ todos }) {
   }
 
   const newTodo = async () => {
-    setIsLoading(true);
-    await axios.post("/api/todo", { todo: text, userId: session.user.id });
-    setText("");
-    router.replace(router.asPath);
-    setIsLoading(false);
+    if (text !== "") {
+      setIsLoading(true);
+      await axios.post("/api/todo", { todo: text, userId: session.user.id });
+      setText("");
+      router.replace(router.asPath);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +54,11 @@ export default function Home({ todos }) {
             <article className="flex gap-4 mb-4">
               <TextInput value={text} className={``} onChange={handleText} />
               <button onClick={newTodo}>
-                {isLoading ? <PuffLoader color="#23e9c2" /> : <GiCheckMark />}
+                {isLoading ? (
+                  <PuffLoader color="#23e9c2" size={15} />
+                ) : (
+                  <GiCheckMark />
+                )}
               </button>
             </article>
 
