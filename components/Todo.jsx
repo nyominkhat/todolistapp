@@ -6,20 +6,25 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
 import ModelBox from "./ModelBox";
+import Loader from "./Loader";
+import { PuffLoader } from "react-spinners";
 
 export default function Todo({ todo }) {
   const router = useRouter();
 
   const [showModel, setShowModel] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleModel() {
     setShowModel(!showModel);
   }
 
   async function handleDel(id) {
+    setIsLoading(true);
     await axios.delete(`/api/todos/` + id);
 
     router.replace(router.asPath);
+    setIsLoading(false);
   }
 
   return (
@@ -34,10 +39,10 @@ export default function Todo({ todo }) {
 
       <div className="flex items-center gap-4">
         <button onClick={handleModel}>
-          <HiOutlinePencilAlt />
+          {isLoading ? <PuffLoader color="#23e9c2" /> : <HiOutlinePencilAlt />}
         </button>
         <button onClick={() => handleDel(todo.id)}>
-          <AiFillDelete />
+          {isLoading ? <PuffLoader color="#23e9c2" /> : <AiFillDelete />}
         </button>
       </div>
 

@@ -5,9 +5,12 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+import { PuffLoader } from "react-spinners";
+
 export default function ModelBox({ todo, handleModel }) {
   const [text, setText] = useState(todo.todo);
   const [isTeskDone, setIsTeskDone] = useState(todo.isDone);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   function handleNewToDo(e) {
@@ -15,15 +18,18 @@ export default function ModelBox({ todo, handleModel }) {
   }
 
   async function handleSubmit() {
+    setIsLoading(true);
     await axios.patch("/api/todo", {
       todo: text,
       id: todo.id,
     });
-     router.replace(router.asPath);
+    router.replace(router.asPath);
     handleModel();
+    setIsLoading(false);
   }
 
   async function handleTeskDone() {
+    setIsLoading(true);
     const updatedIsDone = !isTeskDone;
 
     try {
@@ -33,10 +39,11 @@ export default function ModelBox({ todo, handleModel }) {
       });
 
       setIsTeskDone(updatedIsDone);
-       router.replace(router.asPath);
+      router.replace(router.asPath);
     } catch (error) {
       console.error("Error updating task:", error);
     }
+    setIsLoading(false);
   }
 
   return (
@@ -63,11 +70,15 @@ export default function ModelBox({ todo, handleModel }) {
               handleTeskDone();
             }}
           >
-            <AiOutlineCheckCircle color={`${todo.isDone ? "green" : ""}`} />
+            {isLoading ? (
+              <PuffLoader color="#23e9c2" />
+            ) : (
+              <AiOutlineCheckCircle color={`${todo.isDone ? "green" : ""}`} />
+            )}
           </button>
 
           <button onClick={handleSubmit}>
-            <GiCheckMark />
+            {isLoading ? <PuffLoader color="#23e9c2" /> : <GiCheckMark />}
           </button>
         </div>
       </Card>

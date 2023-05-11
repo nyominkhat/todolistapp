@@ -10,20 +10,17 @@ import { getToDos } from "@/lib/getData";
 import prisma from "@/lib/prisma";
 import Todos from "@/components/Todos";
 import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
 
 export default function Home({ todos }) {
   const { data: session, status } = useSession();
   const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   console.log(session);
 
-  if (status === "loading")
-    return (
-      <section className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen">
-        <PuffLoader color="#23e9c2" />
-      </section>
-    );
+  if (status === "loading") return <Loader />;
 
   // console.log(session);
   // console.log(todos);
@@ -38,9 +35,11 @@ export default function Home({ todos }) {
   }
 
   const newTodo = async () => {
+    setIsLoading(true);
     await axios.post("/api/todo", { todo: text, userId: session.user.id });
     setText("");
     router.replace(router.asPath);
+    setIsLoading(false);
   };
 
   return (
@@ -56,7 +55,7 @@ export default function Home({ todos }) {
             <article className="flex gap-4 mb-4">
               <TextInput value={text} className={``} onChange={handleText} />
               <button onClick={newTodo}>
-                <GiCheckMark />
+                {isLoading ? <PuffLoader color="#23e9c2" /> : <GiCheckMark />}
               </button>
             </article>
 
