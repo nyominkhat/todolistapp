@@ -20,15 +20,30 @@ export default function ModelBox({ todo, handleModel }) {
     setText(e.target.value);
   }
 
-  async function handleSubmit() {
-    setIsLoading({ ...isLoading, submit: true });
-    await axios.patch("/api/todo", {
-      todo: text,
-      id: todo.id,
-    });
-    router.replace(router.asPath);
-    handleModel();
-    setIsLoading({ ...isLoading, submit: false });
+  async function handleSubmit(e) {
+    if (todo.todo !== text) {
+      setIsLoading({ ...isLoading, submit: true });
+      await axios.patch("/api/todo", {
+        todo: text,
+        id: todo.id,
+      });
+      router.replace(router.asPath);
+      handleModel();
+      setIsLoading({ ...isLoading, submit: false });
+    }
+  }
+
+  async function handleKeyPress(e) {
+    if (todo.todo !== text && e.key == "Enter") {
+      setIsLoading({ ...isLoading, submit: true });
+      await axios.patch("/api/todo", {
+        todo: text,
+        id: todo.id,
+      });
+      router.replace(router.asPath);
+      handleModel();
+      setIsLoading({ ...isLoading, submit: false });
+    }
   }
 
   async function handleTeskDone() {
@@ -64,6 +79,7 @@ export default function ModelBox({ todo, handleModel }) {
           className={`${todo.isDone ? "text-green-500" : "text-base"}`}
           disabled={todo.isDone}
           value={text}
+          onKeyDown={handleKeyPress}
           onChange={handleNewToDo}
         />
         <div className="flex items-center gap-4">

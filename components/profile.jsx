@@ -78,6 +78,16 @@ export default function Profile({ handleShowProfile, name, setName }) {
     }
   };
 
+  const handleKeyDown = async (e) => {
+    if (session.user.name !== text && e.key == "Enter") {
+      setIsLoading(true);
+      await axios.patch("/api/user", { name: text, id: session.user.id });
+      router.replace(router.asPath);
+      setIsLoading(false);
+      setName(text);
+    }
+  };
+
   return (
     <section
       onClick={handleShowProfile}
@@ -125,6 +135,7 @@ export default function Profile({ handleShowProfile, name, setName }) {
               defaultValue={
                 name !== "" ? name : session.user ? session.user.name : null
               }
+              onKeyDown={handleKeyDown}
               onChange={handleText}
               placeholder="your name ..."
             />

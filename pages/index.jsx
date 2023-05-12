@@ -41,18 +41,32 @@ export default function Home({ todos }) {
     }
   };
 
+  const handleKeyDown = async (e) => {
+    if (text !== "" && e.key == "Enter") {
+      setIsLoading(true);
+      await axios.post("/api/todo", { todo: text, userId: session.user.id });
+      setText("");
+      router.replace(router.asPath);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Layout>
         <section className="container flex items-center justify-center h-full mx-auto grow">
           <Card className="h-[90%] px-4 py-6 mx-auto select-none min-w-md bg-[#B5B3AE]/5 ring-slate-300">
-            <Title className="font-semibold text-center text-slate-800">
+            <Title className="text-3xl font-bold text-center text-slate-800">
               Get things done!
             </Title>
             <Divider className="border border-slate-400" />
 
             <article className="flex gap-4 mb-4">
-              <TextInput value={text} onChange={handleText} />
+              <TextInput
+                onKeyDown={handleKeyDown}
+                value={text}
+                onChange={handleText}
+              />
               <button onClick={newTodo}>
                 {isLoading ? (
                   <PuffLoader color="#23e9c2" size={15} />

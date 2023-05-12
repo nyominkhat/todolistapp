@@ -9,8 +9,6 @@ export default function Navbar() {
   const [showProfile, setShowProfile] = useState(false);
   const [name, setName] = useState("");
 
-  console.log(session);
-
   function handleShowProfile() {
     setShowProfile(!showProfile);
   }
