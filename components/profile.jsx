@@ -97,11 +97,11 @@ export default function Profile({ handleShowProfile, name, setName }) {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="max-w-lg"
+        className="sm:w-[40rem] w-[26rem]"
       >
         <div className="flex items-center justify-between">
           <div className="flex flex-col items-start">
-            <figure className="rounded-full h-14 w-14">
+            <figure className="w-10 h-10 rounded-full sm:h-14 sm:w-14">
               <img
                 className="object-cover w-full h-full rounded-full"
                 src={session.user.image.toString()}
@@ -115,7 +115,7 @@ export default function Profile({ handleShowProfile, name, setName }) {
 
           <p className="flex flex-col items-start justify-center w-1/4 h-20 pl-4 font-semibold border-l">
             <span className="text-lg text-slate-400">Joined</span>
-            <span className="text-slate-700">
+            <span className="text-sm sm:text-base text-slate-700">
               {formatJoiningDate(session.user.createdAt)}
             </span>
           </p>
