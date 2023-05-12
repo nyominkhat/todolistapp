@@ -25,7 +25,7 @@ export default function SideBar({ handleMenu, isClickMenu }) {
           </Title>
           <figure
             onClick={handleMenu}
-            className="absolute flex items-center justify-center w-10 h-10 transition-all bg-white border rounded-full shadow-sm cursor-pointer -right-5 hover:bg-slate-500 hover:text-white hover:scale-105 hover:w-12 hover:h-12 hover:-right-6"
+            className="absolute flex items-center justify-center w-10 h-10 transition-all bg-white border rounded-full shadow-sm cursor-pointer -right-5 hover:bg-slate-500 hover:text-white hover:scale-105 sm:hover:w-12 sm:hover:h-12 sm:hover:-right-6"
           >
             <HiMenu />
           </figure>
