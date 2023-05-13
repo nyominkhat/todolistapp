@@ -19,8 +19,8 @@ export default NextAuth({
       return Promise.resolve(session);
     },
   },
-  // pages: {
-  //   signIn: "/signin",
-  // },
+  pages: {
+    signIn: "/signin",
+  },
   secret: process.env.JWT_SECRET,
 });
