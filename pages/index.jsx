@@ -1,3 +1,5 @@
+"use-client";
+
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { getSession, useSession } from "next-auth/react";
@@ -8,13 +10,13 @@ import { GiCheckMark } from "react-icons/gi";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
+import { toast } from "react-hot-toast";
 
 import { getToDos } from "@/lib/getData";
 import prisma from "@/lib/prisma";
 import Todos from "@/components/Todos";
 import Loader from "@/components/Loader";
 import SideBar from "@/components/SideBar";
-import { toast } from "react-hot-toast";
 
 export default function Home({ todos }) {
   const { data: session, status } = useSession();
@@ -27,24 +29,25 @@ export default function Home({ todos }) {
     query: "(min-width: 641px)",
   });
 
-  const initialX = isScreenWidthOver640 ? -120 : -70;
-  const animateX = isClickMenu ? 0 : initialX;
-
-  // console.log(session);
+  const animateWidth = isScreenWidthOver640 ? "27vw" : "50vw";
 
   if (status === "loading") return <Loader />;
-
-  if (!session) {
-    router.replace("/api/auth/signin");
-    return null;
-  }
 
   function handleText(e) {
     setText(e.target.value);
   }
 
+  // handle menu
+  const handleMenu = () => {
+    setIsClickMenu(!isClickMenu);
+  };
+
   // submit function
   const newTodo = async () => {
+    if (!session) {
+      router.replace("/api/auth/signin");
+      return null;
+    }
     if (text !== "") {
       setIsLoading(true);
       const newTodo = await axios.post("/api/todo", {
@@ -62,13 +65,13 @@ export default function Home({ todos }) {
     }
   };
 
-  // handle menu
-  const handleMenu = () => {
-    setIsClickMenu(!isClickMenu);
-  };
-
   const handleKeyDown = async (e) => {
     if (text !== "" && e.key == "Enter") {
+      if (!session) {
+        router.replace("/api/auth/signin");
+        return null;
+      }
+
       setIsLoading(true);
       const newTodo = await axios.post("/api/todo", {
         todo: text,
@@ -90,20 +93,15 @@ export default function Home({ todos }) {
       <Head>
         <title>Let&apos;s list</title>
       </Head>
-      <div className="flex w-screen h-screen">
+      <main className="flex w-screen h-screen">
         <motion.div
-          initial={{ x: initialX }}
-          animate={{ x: animateX }}
-          className={`${
-            isClickMenu
-              ? "w-[40vw] md:w-[30vw] lg:w-[15vw]"
-              : "md:-mr-36 -mr-20"
-          } `}
+          animate={{ width: isClickMenu ? animateWidth : "35px" }}
+          className="fixed top-0 left-0 z-50 "
         >
           <SideBar handleMenu={handleMenu} isClickMenu={isClickMenu} />
         </motion.div>
 
-        <section className="flex items-center justify-center h-full px-10 grow">
+        <section className="flex items-center justify-center h-full px-20 grow">
           <Card className="h-[90%] px-4 py-6 mx-auto select-none min-w-md bg-[#B5B3AE]/5 ring-slate-300">
             <Title className="text-xl font-bold text-center sm:text-3xl text-slate-800">
               Get things done!
@@ -128,7 +126,7 @@ export default function Home({ todos }) {
             <Todos todos={todos} />
           </Card>
         </section>
-      </div>
+      </main>
     </>
   );
 }
