@@ -14,6 +14,7 @@ import prisma from "@/lib/prisma";
 import Todos from "@/components/Todos";
 import Loader from "@/components/Loader";
 import SideBar from "@/components/SideBar";
+import { toast } from "react-hot-toast";
 
 export default function Home({ todos }) {
   const { data: session, status } = useSession();
@@ -46,7 +47,15 @@ export default function Home({ todos }) {
   const newTodo = async () => {
     if (text !== "") {
       setIsLoading(true);
-      await axios.post("/api/todo", { todo: text, userId: session.user.id });
+      const newTodo = await axios.post("/api/todo", {
+        todo: text,
+        userId: session.user.id,
+      });
+
+      if (newTodo.status === 201) {
+        toast.success("Successfully  create!");
+      }
+
       setText("");
       router.replace(router.asPath);
       setIsLoading(false);
@@ -61,7 +70,15 @@ export default function Home({ todos }) {
   const handleKeyDown = async (e) => {
     if (text !== "" && e.key == "Enter") {
       setIsLoading(true);
-      await axios.post("/api/todo", { todo: text, userId: session.user.id });
+      const newTodo = await axios.post("/api/todo", {
+        todo: text,
+        userId: session.user.id,
+      });
+
+      if (newTodo.status === 201) {
+        toast.success("Successfully  create!");
+      }
+
       setText("");
       router.replace(router.asPath);
       setIsLoading(false);

@@ -3,10 +3,10 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 import { useRouter } from "next/router";
-
+import { toast } from "react-hot-toast";
+import { PuffLoader } from "react-spinners";
 
 import ModelBox from "./ModelBox";
-import { PuffLoader } from "react-spinners";
 
 export default function Todo({ todo }) {
   const router = useRouter();
@@ -20,7 +20,11 @@ export default function Todo({ todo }) {
 
   async function handleDel(id) {
     setIsLoading(true);
-    await axios.delete(`/api/todos/` + id);
+    const del = await axios.delete(`/api/todos/` + id);
+
+    if (del.status === 200) {
+      toast.success("Successfully Delete!");
+    }
 
     router.replace(router.asPath);
     setIsLoading(false);
