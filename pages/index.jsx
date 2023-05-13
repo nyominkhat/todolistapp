@@ -26,7 +26,7 @@ export default function Home({ todos }) {
     query: "(min-width: 641px)",
   });
 
-  const initialX = isScreenWidthOver640 ? -150 : -70;
+  const initialX = isScreenWidthOver640 ? -120 : -70;
   const animateX = isClickMenu ? 0 : initialX;
 
   // console.log(session);
@@ -80,7 +80,7 @@ export default function Home({ todos }) {
           className={`${
             isClickMenu
               ? "w-[40vw] md:w-[30vw] lg:w-[15vw]"
-              : "md:-mr-40 -mr-20"
+              : "md:-mr-36 -mr-20"
           } `}
         >
           <SideBar handleMenu={handleMenu} isClickMenu={isClickMenu} />
